@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Monster Generator</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link href="../bootstrap.css" rel="stylesheet" type="text/css" />
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+</head>
+<body onload="const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle=\'tooltip\']');const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));reEvaluate(document.getElementById('monster').value)" class="bg-dark text-light">
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+  <script src="../bootstrap.js"></script>
+<center>
+  <div id="filters">
+    <select id="monster" onchange="reEvaluate(this.value)">
+      <option>Dragon</option>
+      <option>Beholder</option>
+      <option>Gnoll</option>
+      <option>Gnoll War Band</option>
+      <option>Hag</option>
+      
+    </select><br><select id="dragonType" disabled>
+      <option>Random</option>
+      <optgroup label="Chromatic">
+        <option>Black</option>
+        <option>Blue</option>
+        <option>Green</option>
+        <option>Red</option>
+        <option>White</option>
+      </optgroup>
+      <optgroup label="Metallic">
+        <option>Brass</option>
+        <option>Bronze</option>
+        <option>Copper</option>
+        <option>Gold</option>
+        <option>Silver</option>
+      </optgroup>
+      <optgroup label="Gemstone">
+        <option>Amethyst</option>
+        <option>Crystal</option>
+        <option>Emerald</option>
+        <option>Sapphire</option>
+        <option>Topaz</option>
+      </optgroup>
+      <optgroup label="Other">
+        <option>Deep</option>
+        <!-- <option>Faerie</option> -->
+        <option>Moonstone</option>
+        <option>Shadow</option>
+        <option>Turtle</option>
+      </optgroup>
+    </select><select id="dragonAge" disabled>
+      <option>Random</option>
+      <option>Wyrmling</option>
+      <option>Young</option>
+      <option>Adult</option>
+      <option>Ancient</option>
+    </select>
+    <br>
+    <button class="btn btn-outline-light" onclick="generate()">Generate</button>
+  </div>
+</center>
+ <p id="output" class="text-light search"></p>
+  
+</body>
+
+</html>

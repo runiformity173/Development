@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Pokedoku Generator</title>
+  <style>
+    button {
+      cursor:pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <script src="html2canvas.min.js"></script>
+  <div id="capture" style="position:absolute;left:0;top:0;width:100vh;height:100%;">
+  <img src="base.jpg" style="position:absolute;left:0;top:0;height:100%;width:100vh;">
+  <p style="position:absolute;left:27vh;top:27vh;" id="7"></p>
+  <p style="position:absolute;left:46.8vh;top:27vh;" id="8"></p>
+  <p style="position:absolute;left:66.6vh;top:27vh;" id="9"></p>
+  <p style="position:absolute;left:7.2vh;top:37.8vh;" id="4"></p>
+  <p style="position:absolute;left:7.2vh;top:57.6vh;" id="5"></p>
+  <p style="position:absolute;left:7.2vh;top:77.4vh;" id="6"></p>
+  </div>
+  <button onclick="generate();" style="position:absolute;right:0px;top:0px">Generate PokeDoku</button>
+  <button style="position:absolute;right:0px;top:24px"  onclick='html2canvas(document.querySelector("#capture")).then(canvas => {
+      saveCanvasAsImage(canvas,"pokedoku.png");
+    });'>Save Image</button>
+  <script>
+    function saveCanvasAsImage(canvas, fileName) {
+      // Convert canvas to data URL
+      const dataURL = canvas.toDataURL("image/png");
+
+      // Create a temporary link element
+      const link = document.createElement("a");
+      link.href = dataURL;
+      link.download = fileName;
+
+      // Trigger a click event to download the image
+      link.click();
+    }
+    const choose = o=>o[Math.floor(Math.random()*o.length)];
+    const types = ["Normal","Fire","Water","Electric","Grass","Ice","Bug","Flying","Fairy","Fighting","Ground","Dark","Dragon","Ghost","Psychic","Steel","Rock","Poison"];
+    const others = ["GMax","Legendary","Monotype","Mega"];
+    function generate() {
+      const selected = new Set();
+      const mid = Math.random()>0.5;
+      let f = mid?8:7;
+      
+      for (let i = 3;i<f;) {
+        const s = choose(types);
+        if (!selected.has(s)) {
+          i++;
+          selected.add(s);
+          document.getElementById(String(i)).innerHTML = s;
+        }
+      }
+      const selected2 = new Set();
+
+      let ll = mid?8:7;
+
+      for (let i = ll;i<9;) {
+        const s = choose(others);
+        if (!selected2.has(s)) {
+          i++;
+          selected2.add(s);
+          document.getElementById(String(i)).innerHTML = s;
+        }
+      }
+      
+    }
+    generate();
+  </script>
+</body>
+
+</html>
