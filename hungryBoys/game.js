@@ -5,7 +5,12 @@ const settings = {
 let day = 0;
 function shuffle(a){const b=[...a];for(let c=b.length-1;0<c;c--){const a=Math.floor(Math.random()*(c+1));[b[c],b[a]]=[b[a],b[c]]}return b}
 function choose2(o) {x = Object.keys(o);return x[Math.floor(Math.random()*x.length)];}
-
+function randomNormal(min, max, mean, sigma) {
+    const u = 1 - Math.random();
+    const v = Math.random();
+    const z = Math.sqrt(-2.0*Math.log(u))*Math.cos(2.0*Math.PI*v);
+    return Math.max(min,Math.min(max,z * sigma + mean));
+}
 class Player {
   constructor(name, pronounSet, index, scores=[0,2,4]) {
     this.index = index;
@@ -29,7 +34,7 @@ class Player {
     this.resources = {"random":0,"food":0,"water":0};
     this.weapons = [];
     this.shelter = 0;
-    this.diseases = [];
+    this.conditions = {};
 
     this.looted = false;
     this.dayDead = -1;
@@ -75,9 +80,49 @@ class Player {
       return true;
     }
   }
+  addCondition(condition,amount=1) {
+    if(condition in this.conditions){this.conditions[condition]+=amount}else{this.conditions[condition]=amount;}
+  }
+  removeCondition(condition,amount=1) {
+    if(condition in this.conditions){ if ((this.conditions[condition]-=amount) < 1) {delete this.conditions[condition]}}
+  }
+  hasCondition(condition,amount=1) {
+    return this.conditions[condition] && this.conditions[condition] >= amount;
+  }
+  resolveCondition(condition,amount) {
+    switch (condition) {
+      case "bleeding":
+        if (this.resources["random"]) {
+          this.resources["random"]--;
+          this.removeCondition("bleeding",Math.ceil(this.bleeding/2)+2);
+        }
+        if (this.resources["water"] > 1 && this.hasCondition("bleeding")) {
+          this.consumeWater();
+          this.removeCondition("bleeding",5);
+        }
+        if (this.resources["food"] > 1 && this.hasCondition("bleeding")) {
+          this.consumeFood();
+          this.removeCondition("bleeding",3);
+        }
+
+        this.health -= amount;
+        break;
+      case "burned":
+        this.health -= amount;
+        while (this.resources.water > 1 && this.hasCondition("burned")) {
+          this.resources.water--;
+          this.removeCondition("burned",1)
+        }
+        
+        break;
+      default:
+        this.health -= amount;
+        break;
+    }
+  }
   damage(amount, bleed=true) {
     this.health -= amount;
-    if (bleed) this.bleeding += amount;
+    if (bleed) this.addCondition("bleeding",amount);
   }
   fight(other,isOther=false) {
     const damage1 = Math.floor(Math.random()*5) + this.str;
@@ -94,31 +139,11 @@ class Player {
   }
   endDay() {
     const result = {};
-    for (disease of this.diseases) {
-
-    }
     // Resource tick and check
     this.consumeFood();
     this.consumeWater();
     if (this.shelter == 0) {
       this.health -= 5;
-    }
-    if (this.bleeding) {
-      
-      if (this.resources["random"]) {
-        this.resources["random"]--;
-        this.bleeding = Math.max(0,Math.floor(this.bleeding/2)-2);
-      }
-      if (this.resources["water"] > 1 && this.bleeding) {
-        this.consumeWater();
-        this.bleeding = Math.max(0,this.bleeding-5);
-      }
-      if (this.resources["food"] > 1 && this.bleeding) {
-        this.consumeFood();
-        this.bleeding = Math.max(0,this.bleeding-3);
-      }
-      
-      this.health -= this.bleeding;
     }
     if (this.health <= 0) {
       this.dayDead = day;
@@ -140,7 +165,7 @@ class Event {
       this.player.resources.random += this.data[0];
       this.player.resources.food += this.data[1];
       this.player.resources.water += this.data[2];
-      this.player.log.push({day:day,log:`{name} forages and finds ${this.data[1]} food, ${this.data[2]} water, and ${this.data[0]} random.` + this.distance<2?` {cap}{subject}`:""});
+      this.player.log.push({day:day,log:`{name} forages and finds ${this.data[1]} food, ${this.data[2]} water, and ${this.data[0]} random.` + ((this.distance<2)?` {cap}{subject}`:"")});
     }
     else if (this.type === "shelter") {
       // this.data = Math.floor(Math.random()*3);
@@ -151,6 +176,22 @@ class Event {
       this.player.shelter -= 1;
       this.player.distance += 1;
       this.player.log.push({day:day,log:`{name} moves further out from the Cornucopia`});
+    }
+    else if (this.type === "event") {
+      chosen = choose(data.randomEvents);
+      this.data = Math.random() < this.data.chance;
+      if (this.data) {
+        for (effect in chosen.effects) {
+          let amount;
+          if (effect.distribution.type === "normal") {
+            amount = randomNormal(effect.distribution.min,effect.distribution.max,effect.distribution.mean,effect.distribution.sigma);
+          } else if (effect.distribution.type === "uniform") {
+            amount = effect.distribution.min + Math.floor(Math.random() * (effect.distribution.max - effect.distribution.min + 1))
+          }
+          this.player.addCondition(effect.condition,amount)
+        }
+      }
+      this.player.log.push({day:day,log:(chosen.log + (this.data?chosen.fail:chosen.success))})
     }
     else if (this.type === "fight") {
       this.data = this.player.fight(this.player2);

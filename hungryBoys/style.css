@@ -21,6 +21,9 @@ html {
 .playerP {
   display:inline-block;
 }
+.playerField {
+  display:block;
+}
 .remove {
   border-radius:2px;
   cursor:pointer;

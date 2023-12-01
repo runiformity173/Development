@@ -65,7 +65,7 @@ function gameOver(player) {
 
 // Gamemaker actions
 function lowerMapSize() {
-  settings.mapRadius--;
+  alert(--settings.mapRadius);
   for (player of players) {
     (player.health > 0) && (player.distance = Math.min(player.distance,settings.mapRadius));
   }

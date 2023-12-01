@@ -37,6 +37,31 @@ const data = {
     "a sword":{"damage":10,"speed":-1,"ability":"str","ammunition":-1},
     "a trident":{"damage":8,"speed":0,"ability":"str","ammunition":-1}
   },
+  randomEvents:[
+    {"log":"{player} is trapped in a forest fire, ", "fail":"and got burned","chance":0.5,"success":"but escaped unharmed","effects":[
+      {
+      "type":"condition",
+      "condition":"burned",
+      "distribution":{
+        "type":"normal",
+        "min":1,
+        "max":Infinity,
+        "mean":5,
+        "sigma":2
+      }
+    },
+    {
+      "type":"damage",
+      "distribution":{
+        "type":"normal",
+        "min":1,
+        "max":Infinity,
+        "mu":10,
+        "sigma":4
+      }
+    },
+    ]}
+  ],
   foods:{
     "plants":{
       "edible leaves":1,
