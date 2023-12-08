@@ -1,3 +1,10 @@
+const deathMessages = {
+  bleeding:"{name} bled to death from their wounds",
+  burned:"{name} died of their burns",
+  exposure:"{name} died of exposure",
+  starving:"{name} starved to death",
+  dehydration:"{name} died of dehydration"
+}
 const pronounSets = {
   m:{
     subject:"he",
@@ -37,8 +44,9 @@ const data = {
     "a sword":{"damage":10,"speed":-1,"ability":"str","ammunition":-1},
     "a trident":{"damage":8,"speed":0,"ability":"str","ammunition":-1}
   },
+  // Chance is chance of the success condition
   randomEvents:[
-    {"log":"{player} is trapped in a forest fire, ", "fail":"and got burned","chance":0.5,"success":"but escaped unharmed","effects":[
+    {"log":"{name} is trapped in a forest fire ", "fail":"and gets burned","chance":0.5,"success":"but escapes unharmed","effects":[
       {
       "type":"condition",
       "condition":"burned",
@@ -56,10 +64,25 @@ const data = {
         "type":"normal",
         "min":1,
         "max":Infinity,
-        "mu":10,
+        "mean":10,
         "sigma":4
       }
     },
+    ]},
+    {"log":"{name} is attacked by mutts ","chance":0.33,"success":"but escapes unharmed","effects":[
+      {
+      "type":"damage",
+      "extra":"fight",
+      "weapon":[["their claws"]],
+      "source":["a mutt"],
+      "distribution":{
+        "type":"normal",
+        "min":1,
+        "max":Infinity,
+        "mean":7,
+        "sigma":3
+      }
+    }
     ]}
   ],
   foods:{

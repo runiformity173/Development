@@ -17,10 +17,23 @@
         <p class="playerP">
           <input type="text" class="playerInput" maxlength="30" placeholder="Name">
           <select class="playerInput">
+            <option disabled selected>Pronoun</option>
             <option>Generic</option>
             <option>Male</option>
             <option>Female</option>
             <option>Object</option>
+          </select>
+          <select class="playerInput">
+            <option disabled selected>Primary Ability</option>
+            <option>Strength</option>
+            <option>Dexterity</option>
+            <option>Intelligence</option>
+          </select>
+          <select class="playerInput">
+            <option disabled selected>Secondary Ability</option>
+            <option>Strength</option>
+            <option>Dexterity</option>
+            <option>Intelligence</option>
           </select>
           <!-- hello -->
           &emsp;
@@ -31,15 +44,28 @@
         <br>
       </span>
     </template>
+    <div id="playerFieldWrapper">
     <div id="playerField">
       
     </div>
-    <button id="addPlayerButton" class="btn btn-outline-light" onclick='this.previousElementSibling.appendChild(document.getElementById("playerTemplate").content.cloneNode(true));'>Add Player</button><br>
+    <button id="addPlayerButton" class="btn btn-outline-light" onclick='if (this.previousElementSibling.children.length % 2) {this.previousElementSibling.appendChild(document.getElementById("playerTemplate").content.cloneNode(true));} else {this.previousElementSibling.insertBefore(document.getElementById("playerTemplate").content.cloneNode(true),this.previousElementSibling.children[Math.ceil(this.previousElementSibling.children.length / 2)]);}'>Add Player</button></div>
+    <div id="gamemakerActions">
+      <div id="gamemakerActionsActual">
+        <button onclick="badEvent()" class="btn btn-outline-light">Cause Bad Event Tomorrow</button>
+        <br>
+        <button onclick="lowerMapSize()" class="btn btn-outline-light">Lower Map Size</button>
+      </div>
+      <div id="playersStatus">
+        
+      </div>
+    </div>
+    <br>
     <button class="btn btn-outline-light" id="mainButton" onclick="start();">Start</button>
   </div>
   <div id="outputWrapper">
     <p id="output"></p>
   </div>
+  
   <script src="data.js"></script>
   <script src="game.js"></script>
   <script src="script.js"></script>

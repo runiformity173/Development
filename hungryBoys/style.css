@@ -5,11 +5,7 @@ html {
 }
 #outputWrapper {
   z-index:-5;
-  position:absolute;
-  left:25%;
-  bottom:1%;
   width:50%;
-  height:70%;
 }
 #options {
   text-align:center;
@@ -56,4 +52,25 @@ select.playerInput {
 .indented {
   display:inline-block;
   margin-left:1em;
+}
+#gamemakerActions {
+  display: none;
+  text-align:center;
+  
+}
+#gamemakerActions * {
+  text-align:center;
+  columns:2;
+  /* background-color: red; */
+}
+#playersStatus {
+
+}
+#gamemakerActionsActual {
+  display:inline-block;
+  width:auto;
+
+}
+#gamemakerActions * * {
+  display: block;
 }
