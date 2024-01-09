@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>AYO</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link href="../bootstrap.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="bg-dark text-light">
+  <select id="setting" class="btn btn-outline-light">
+    <option selected>Faerûn</option>
+    <option>Eberron</option>
+    <option>Dragonlance</option>
+    <option>Greyhawk</option>
+    <option>Norse</option>
+    <option>Greek</option>
+    <option>Egyptian</option>
+    <option>Celtic</option>
+  </select>
+  <select id="domain" class="btn btn-outline-light">
+    <option>Any</option>
+    <option>Death</option>
+    <option>Knowledge</option>
+    <option>Life</option>
+    <option>Light</option>
+    <option>Nature</option>
+    <option>Tempest</option>
+    <option>Trickery</option>
+    <option>War</option>
+  </select>
+  <select id="alignment" class="btn btn-outline-light">
+    <option>Any</option>
+    <option>Lawful Good</option>
+    <option>Neutral Good</option>
+    <option>Chaotic Good</option>
+    <option>Lawful Neutral</option>
+    <option>Neutral</option>
+    <option>Chaotic Neutral</option>
+    <option>Lawful Evil</option>
+    <option>Neutral Evil</option>
+    <option>Chaotic Evil</option>
+  </select>
+  <button onclick="start()" class="btn btn-outline-light">Search</button>
+  <p id="output">
+    
+  </p>
+  <p id="output2">
+
+  </p>
+  <script src="../bootstrap.js"></script>
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,9 +1,25 @@
 const deathMessages = {
-  bleeding:"{name} bled to death from their wounds",
-  burned:"{name} died of their burns",
-  exposure:"{name} died of exposure",
-  starving:"{name} starved to death",
-  dehydration:"{name} died of dehydration"
+  bleeding:"{name} bleeds to death from {possessive} wounds",
+  burned:"{name} dies of {possessive} burns",
+  exposure:"{name} dies of exposure",
+  starving:"{name} starves to death",
+  dehydration:"{name} dies of dehydration"
+}
+const almostDeathMessages = {
+  bleeding:"{name} almost bleeds to death from {possessive} wounds",
+  burned:"{name} almost dies of {possessive} burns",
+  exposure:"{name} almost dies of exposure",
+  starving:"{name} almost starves to death",
+  dehydration:"{name} almost dies of dehydration"
+}
+const weakenedMessages = {
+  bleeding:"weakened by bleeding out",
+  burned:"heavily burned",
+  exposure:"weakened by exposure to the elements",
+  starving:"weakened by hunger",
+  dehydration:"weakened by lack of water",
+  
+  battle:"injured from battle"
 }
 const pronounSets = {
   m:{
@@ -83,67 +99,50 @@ const data = {
         "sigma":3
       }
     }
-    ]}
-  ],
-  foods:{
-    "plants":{
-      "edible leaves":1,
-      "berries":2,
-      "fruit":2
+    ]},
+    {"log":"{name} is caught in a thunderstorm ", "fail":"and gets injured from the wind","chance":0.3,"success":"but escapes unharmed","effects":[
+    {
+      "type":"damage",
+      "distribution":{
+        "type":"normal",
+        "min":1,
+        "max":Infinity,
+        "mean":10,
+        "sigma":3
+      }
     },
-    "animals":{
-      "a squirrel":1,
-      "a rabbit":2,
-      "a ":1
-    }
-  },
+    ]},
+  ],
+  foods:[
+    ["no food","only rotten fruit"],
+    ["edible leaves","berries","a squirrel", "a bird"],
+    ["some fruit","a rabbit"],
+    ["some squirrels", "many fruits"],
+    ["some rabbits"],
+    ["a deer","a boar"],
+    ["a deer","a boar"],
+    ["a deer","a boar"]
+  ],
+  water:[
+    "no water",
+    "some water",
+    "some water",
+    "a creek",
+    "a stream",
+    "a river",
+    "a lake",
+    "a lake"
+  ],
+  random:[
+    ["nothing else of value"],
+    ["some rope","some fabric"],
+    ["some bandages"],
+    ["a lot of rope"],
+    ["some medicine","a lot of fabric"]
+  ],
   shelters:[
-    "a tree",
-    "an unknown animal's den",
-    "your mom's house",
-    "a riverbed",
-    "a cave",
-    "a dumpster"
+    
   ],
-  heals:{
-    "a gapple":10,
-    "bandages":3,
-    "an apple":2,
-    "a mysterious drink":4,
-    "a picture of a kitten":5
-  },
-  disasters:{
-    "A pack of rabid mutants is let loose into the arena":{"damage":[0,0,0,0,3,3,8],"deathCause":"Killed by mutants","message":{"0":"{name} was safe","3":"{name} was bitten","8":"{name} was mauled"}},
-    "A huge tornado sweeps across the land":{"damage":[0,0,0,0,1,1,1,3,7,10],"deathCause":"Died in a tornado","message":{"0":"{name} was safe","1":"{name} felt the wind","3":"{name} was blown around","7":"{name} was battered","10":"{name} was picked up"}},
-    "A forest fire ravages the land":{"damage":[0,1,2,2,3,3,6],"deathCause":"Died in a forest fire","message":{"0":"{name} was safe","1":"{name} felt the heat","3":"{name} was scorched","6":"{name} was incinerated","2":"{name} was burned"}}
-  },
-  waits:[
-    "{name} sneezed",
-    "{name} walked around in circles",
-    "{name} decided to sleep in",
-    "{name} twiddled {possessive} thumbs",
-    "{name} waited and hoped that everyone else would randomly die"
-  ],
-  randomItems:{
-    "a copy of Sun Tzu: The Art of War":"{name} read The Art of War, hoping that that would help {possessive} chances of victory",
-    "a magic wand":"{name} waved {possessive} magic wand, turning {object}self into a {animal} and back",
-    "a magic wand":"{name} waved {possessive} magic wand, turning {object}self into a {animal} and back"
-  },
-  badEvents:{
-    "{name} was attacked by a large anthropomorphic wheel of gouda":{"type":"damage","effect":[4,"Died from lactose intolerance"]},
-    "{name} was forced to watch the Bee Movie":{"type":"damage","effect":[10,"Died of cringe"]},
-    "{name} tripped on a stick":{"type":"damage","effect":[1,"Died of clumsiness"]},
-    "{name} got tangled in a bush":{"type":"damage","effect":[1,"Died of clumsiness"]},
-    "{name} tripped on some moss":{"type":"damage","effect":[1,"Died of clumsiness"]},
-    "{name} poked {object}self":{"type":"damage","effect":[1,"Died of clumsiness"]},
-    "{name} slept under a nest of tracker jackers":{"type":"damage","effect":[3,"Died of drug hornets"]},
-    "{name} was struck by lightning":{"type":"damage","effect":[5,"Died of electrocution"]},
-    "{name} got their baby photos leaked to the public":{"type":"damage","effect":[6,"Died of embarrasment"]},
-    "{name} caught a cold":{"type":"condition","effect":[1,"sickness (cold)","sick (cold)"],"else":"A cold tried to infect {name}, but {subject} already has it"},
-    "{name} caught a cold":{"type":"condition","effect":[1,"sickness (cold)","sick (cold)"],"else":"A cold tried to infect {name}, but {subject} already has it"},
-    "{name} caught the Delta Variant":{"type":"condition","effect":[2,"sickness (COVID-19)","sick (COVID-19)"],"else":"The Delta Variant tried to infect {name}, but {subject} already has it"},
-    "{name} caught the Delta Variant":{"type":"condition","effect":[2,"sickness (COVID-19)","sick (COVID-19)"],"else":"The Delta Variant tried to infect {name}, but {subject} already has it"}
-  },
   animals:["bat", "bear", "beaver", "bee", "beetle", "boar", "bull", "butterfly", "camel", "cat", "chameleon", "chicken", "cobra", "cockroach", "cow", "crab", "crocadile", "crow", "deer", "dodo", "dog", "dolphin", "dragon", "duck", "falcon", "fish", "flamingo", "fly", "fox", "frog", "gecko", "giraffe", "gnat", "gnu", "goat", "goose", "gopher", "gorilla", "griffin", "gull", "hamster", "hare", "hawk", "hedgehog", "heron", "horse", "hyena", "jackal", "jaguar", "kangaroo", "kitten", "kiwi", "ladybug", "lemur", "leopard", "lion", "lizard", "llama", "lynx", "mammoth", "mantis", "meerkat", "mink", "monkey", "moth", "mule", "panda", "parrot", "peacock", "penguin", "phoenix", "pigeon", "piranha", "pony", "puffin", "pug", "puma", "python", "quokka", "rabbit", "raccoon", "rat", "raven", "rhino", "scorpion", "seal", "shark", "sheep", "shrimp", "skunk", "sloth", "snail", "spider", "squid", "squirrel", "starfish", "swallow", "swan", "tapir", "tiger", "toad", "turkey", "turtle", "walrus", "wasp", "whale", "wolf", "wombat", "yak", "zebra"]
 };
 

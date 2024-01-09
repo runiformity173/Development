@@ -48,12 +48,12 @@
     <div id="playerField">
       
     </div>
-    <button id="addPlayerButton" class="btn btn-outline-light" onclick='if (this.previousElementSibling.children.length % 2) {this.previousElementSibling.appendChild(document.getElementById("playerTemplate").content.cloneNode(true));} else {this.previousElementSibling.insertBefore(document.getElementById("playerTemplate").content.cloneNode(true),this.previousElementSibling.children[Math.ceil(this.previousElementSibling.children.length / 2)]);}'>Add Player</button></div>
+    <button id="addPlayerButton" class="btn btn-outline-light" onclick='if (this.previousElementSibling.children.length % 2) {this.previousElementSibling.appendChild(document.getElementById("playerTemplate").content.cloneNode(true));} else {this.previousElementSibling.insertBefore(document.getElementById("playerTemplate").content.cloneNode(true),this.previousElementSibling.children[Math.ceil(this.previousElementSibling.children.length / 2)]);}'>Add Player</button><button onclick="load()" class="btn btn-outline-light">Load</button><button onclick="save()" class="btn btn-outline-light">Save</button><button onclick="erase()" class="btn btn-outline-light">Erase Save</button></div>
     <div id="gamemakerActions">
       <div id="gamemakerActionsActual">
-        <button onclick="badEvent()" class="btn btn-outline-light">Cause Bad Event Tomorrow</button>
+        <button onclick="badEvent()" class="btn btn-outline-light" id="badEventButton">Cause Bad Event Tomorrow</button>
         <br>
-        <button onclick="lowerMapSize()" class="btn btn-outline-light">Lower Map Size</button>
+        <button id="lowerMapSizeButton" onclick="lowerMapSize()" class="btn btn-outline-light">Lower Map Radius to 7</button>
       </div>
       <div id="playersStatus">
         

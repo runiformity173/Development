@@ -37,11 +37,12 @@ class Player {
     this.weapons = {};
     this.shelter = 0;
     this.conditions = {};
+    this.damages = {};
 
     this.looted = false;
     this.dayDead = -1;
     this.dead = false;
-    this.deathMessage = "";
+    this.__deathMessage = "";
   }
   get status() {
     const a = this.health/this.maxHealth;
@@ -52,10 +53,13 @@ class Player {
     else if (a < 1) {k = "Bruised";}
     else {k = "Healthy";}
     let weap = this.damageAmount()[1].replace(/an? /,"");
-    return `${this.name}: ${k} | Weapon: ${weap[0].toUpperCase() + weap.slice(1)}`;
+    return `${this.name}: ${k}`+((this.health>0)?` | Weapon: ${weap[0].toUpperCase() + weap.slice(1)}`:"");
   }
   display() {
     modal(this.health+" | "+(this.bleeding));
+  }
+  get moveChance() {
+    return (1/this.distance*2);
   }
   encounterChance(other) {
     return Math.acos((this.distance**2 + other.distance**2 - settings.encounterDistanceSquared)/(2*other.distance*this.distance))/Math.PI/aliveNumber*2;
@@ -79,7 +83,6 @@ class Player {
       }
     }
     if (consume && this.weapons[finalWeapon] && this.weapons[finalWeapon].ammunition !== -1) this.weapons[finalWeapon].ammunition--;
-    if (consume) console.log(finalWeapon,final);
     return [final,finalWeapon,finalS];
   }
   forageAmount() {
@@ -160,21 +163,32 @@ class Player {
         break;
     }
   }
-  set deathMessage(message) {
-    this.log.push({day:day,log:message})
+  deathMessage(messageOG,type,extra) {
+    let message = messageOG;
+    let max = 0;let m="";let p;for (const key in this.damages) {if ((p=this.damages[key])>max) {m=key;max=p}}
+    if (m !== type) {
+
+      message = message.replace("{name}",`{name}, ${weakenedMessages[m]},`);
+    }
+    this.__deathMessage = (extra?extra:type);
+    this.log.push({day:day,log:message,death:true})
   }
   damage(amount, type, battle=false) {
   
     this.health -= amount;
     if (battle) this.addCondition("bleeding",amount);
+    const key = battle?"battle":type;
+    if (key in this.damages) this.damages[key] += amount;
+    else this.damages[key] = amount;
+
     if (this.health <= 0 && !this.dead) {
       aliveNumber--;
       this.dead = true;
       this.dayDead = day;
       if (battle) {
-        this.deathMessage = `{name} is killed in battle by ${type.player} with ${type.weapon}`;
+        this.deathMessage(`{name} is killed in battle by ${type.player} with ${type.weapon}`,"battle",type);
       } else {
-        this.deathMessage = deathMessages[type];
+        this.deathMessage(deathMessages[type],type);
       }
     } else {
       if (battle) {
@@ -229,7 +243,7 @@ class Event {
       this.player.resources.food += this.data[1];
       this.player.resources.water += this.data[2];
       if (this.data[3]) this.player.addWeapon(this.data[3]);
-      this.player.log.push({day:day,log:`{name} forages and finds ${this.data[1]} food, ${this.data[2]} water, and ${this.data[0]} random` + ((this.data[3])?`. {cap}{subject} also finds ${this.data[3]}`:"")});
+      this.player.log.push({day:day,log:`{name} forages and finds ${choose(data.foods[this.data[1]])}, ${data.water[this.data[2]]}, and ${choose(data.random[this.data[0]])}` + ((this.data[3])?`. {cap}{subject} also finds ${this.data[3]}`:"")});
     }
     else if (this.type === "shelter") {
       // this.data = Math.floor(Math.random()*3);
@@ -237,12 +251,12 @@ class Event {
       this.player.log.push({day:day,log:`{name} creates a shelter for {object}self`});
     }
     else if (this.type === "move") {
-      this.player.shelter -= 1;
+      // this.player.shelter -= 1;
       this.player.distance += 1;
       this.player.log.push({day:day,log:`{name} moves further out from the Cornucopia`});
     }
     else if (this.type === "event") {
-      let chosen = choose(data.randomEvents);
+      let chosen = data.randomEvents[this.player2];
       this.data = Math.random() > chosen.chance;
       if (this.data) {
         for (const effect of chosen.effects) {
@@ -264,12 +278,17 @@ class Event {
     }
     else if (this.type === "fight") {
       this.data = this.player.fight(this.player2);
+      if (!this.player.dead && this.player2.dead) {
+        
+      } else if (!this.player2.dead && this.player.dead) {
+        this.
+      }
       // this.player.log.push({day:day,log:(`{name} fights ${this.player2.nameDisplay} and ` + (this.data[0]?`takes ${this.data[0]} damage`:"emerges unscathed"))});
       // this.player2.log.push({day:day,log:(`{name} fights ${this.player.nameDisplay} and ` + (this.data[1]?`takes ${this.data[1]} damage`:"emerges unscathed"))});
     }
     else if (this.type === "peace") {
       this.player.log.push({day:day,log:`{name} sees ${this.player2.nameDisplay}, but remains hidden`});
-      this.player2.log.push({day:day,log:`{name} sees ${this.player.nameDisplay}, but remains hidden`});
+      // this.player2.log.push({day:day,log:`{name} sees ${this.player.nameDisplay}, but remains hidden`});
     }
   }
 }
@@ -297,8 +316,8 @@ function resolveDay() {
   for (const player of players) {
     if (!player.dead) {
       let action;
-      if (player.resources.water === 0 || player.resources.food === 0) {action = "forage";}
-      else if (!player.shelter && Math.random()<0.6 && player.distance < settings.mapRadius) {action = "move";}
+      if (player.resources.water === 0 && player.resources.food === 0) {action = "forage";}
+      else if (!player.shelter && Math.random()<(player.moveChance) && player.distance < settings.mapRadius) {action = "move";}
       else if (!player.shelter) {action = "shelter";}
       else {action = "forage";}
       events.push(new Event(action,player));
@@ -311,8 +330,8 @@ function resolveDay() {
           else events.push(new Event(encounterAction,player2,player));
         }
       }
-      if (BAD_EVENT) {
-        events.push(new Event("event",player));
+      if (BAD_EVENT!==false) {
+        events.push(new Event("event",player,BAD_EVENT));
       }
     }
     
@@ -320,22 +339,27 @@ function resolveDay() {
     BAD_EVENT = false;
   events = shuffle(events);
   for (const event of events) {
-    event.resolve();
     const alive = players.filter(o=>o.health>0);
-    if (alive.length == 1) {
-      console.log(players);
-
-      gameOver(alive[0]);
+    const healths = alive.map(o=>o.health);
+    event.resolve();
+    const alive2 = players.filter(o=>o.health>0);
+    if (alive2.length == 1) {
+      gameOver(alive2[0]);
+      return;
+    } else if (alive2.length == 0) {
+      gameOver(alive[healths.indexOf(Math.max(...healths))]);
       return;
     }
+    
   }
   const alive = players.filter(o=>o.health>0);
-  const healths = players.map(o=>o.health-o.bleeding);
+  const healths = alive.map(o=>o.health);
   resolveEndDay();
-  if (alive.length == 1) {
-    gameOver(alive[0]);
-  } else if (alive.length == 0) {
-    gameOver(players[healths.indexOf(Math.max(...healths))]);
+  const alive2 = players.filter(o=>o.health>0);
+  if (alive2.length == 1) {
+    gameOver(alive2[0]);
+  } else if (alive2.length == 0) {
+    gameOver(alive[healths.indexOf(Math.max(...healths))]);
   } else {
     displayLogs(day);
   }

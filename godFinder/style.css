@@ -1,0 +1,6 @@
+#output {
+  columns:2;
+}
+#output a {
+  display:inline-block;
+}

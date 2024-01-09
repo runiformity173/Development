@@ -60,6 +60,59 @@ function addPlayers() {
   }
   aliveNumber = players.length;
 }
+function setCookie(name,value) {
+  const prev = JSON.parse(localStorage.getItem("hungerGames") || "{}");
+  prev[name] = value;
+  localStorage.setItem("hungerGames", JSON.stringify(prev));
+}
+function getCookie(name) {
+  return JSON.parse(localStorage.getItem("hungerGames") || "{}")[name] || "[]";
+}
+function eraseCookie(name) {   
+  const prev = JSON.parse(localStorage.getItem("hungerGames"));
+  if (name in prev) delete prev[name];
+  localStorage.setItem("hungerGames", JSON.stringify(prev));
+}
+function save() {
+  const name = prompt("What name to save as?");
+  const final = [];
+  let playerN = 0;
+  for (const field of document.getElementById("playerField").children) {
+    playerN++
+    final.push({name:field.firstElementChild.firstElementChild.value,pronoun:field.firstElementChild.firstElementChild.nextElementSibling.value,primary:field.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.value,secondary:field.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.value,});
+  }
+  setCookie(name,JSON.stringify(final));
+  const w = JSON.parse(getCookie("list_of_saves")) || [];
+  if (!w.includes(name)) w.push(name);
+  setCookie("list_of_saves",JSON.stringify(w));
+}
+function erase() {
+  const name = prompt("What name to erase? You have:\n"+JSON.parse(getCookie("list_of_saves")).join("\n"));
+  eraseCookie(name);
+  const w = JSON.parse(getCookie("list_of_saves"));
+  if (w.includes(name)) {
+    w.splice(w.indexOf(name),1);
+    setCookie("list_of_saves",JSON.stringify(w));
+  }
+}
+function load() {
+  const name = prompt("What name to get? You have:\n"+JSON.parse(getCookie("list_of_saves")).join("\n"));
+  const final = JSON.parse(getCookie(name));
+  let n = 0;
+  const k = document.getElementById("playerField");
+  k.innerHTML = "";
+  for (const field of final) document.getElementById('addPlayerButton').click();
+  for (const field of final) {
+
+    const f = k.children[n].firstElementChild.firstElementChild;
+    console.log(f);
+    f.value = field.name;
+    f.nextElementSibling.value = field.pronoun;
+    f.nextElementSibling.nextElementSibling.value = field.primary;
+    f.nextElementSibling.nextElementSibling.nextElementSibling.value = field.secondary;
+    n++;
+  }
+}
 function start() {
   if (document.getElementById("mainButton").innerHTML == "Start") {
     clear();
@@ -68,11 +121,13 @@ function start() {
       return false;
     }
     day = 0;
+    settings.mapRadius = 8;
+    document.getElementById("lowerMapSizeButton").innerHTML = `Lower Map Radius to ${settings.mapRadius - 1}`;
     document.getElementById("mainButton").innerHTML = "Begin!";
     document.getElementById("playerFieldWrapper").style.display = "none";
     document.getElementById("gamemakerActions").style.display = "inline-block";
     start();
-  } else {document.getElementById("mainButton").innerHTML = "Next Day";day++;resolveDay();}
+  } else {document.getElementById("mainButton").innerHTML = "Next Day";document.getElementById("badEventButton").innerHTML = "Cause Bad Event Tomorrow";day++;resolveDay();}
 }
 
 function gameOver(player) {
@@ -85,11 +140,17 @@ function gameOver(player) {
 
 // Gamemaker actions
 function lowerMapSize() {
-  alert(--settings.mapRadius);
+  document.getElementById("lowerMapSizeButton").innerHTML = `Lower Map Radius to ${--settings.mapRadius - 1}`;
   for (player of players) {
     (player.health > 0) && (player.distance = Math.min(player.distance,settings.mapRadius));
   }
 }
 function badEvent() {
-  BAD_EVENT = true;
+  if (BAD_EVENT === false) {
+    BAD_EVENT = Math.floor(Math.random()*data.randomEvents.length);
+    document.getElementById("badEventButton").innerHTML = "Cancel Bad Event";
+  } else {
+    BAD_EVENT = false;
+    document.getElementById("badEventButton").innerHTML = "Cause Bad Event Tomorrow";
+  }
 }
