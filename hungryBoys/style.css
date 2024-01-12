@@ -53,6 +53,9 @@ select.playerInput {
   display:inline-block;
   margin-left:1em;
 }
+td:nth-child(odd) {
+  width:10%;
+}
 #gamemakerActions {
   display: none;
   text-align:center;

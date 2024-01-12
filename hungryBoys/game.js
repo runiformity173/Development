@@ -16,12 +16,12 @@ function randomNormal(min, max, mean, sigma) {
 class Player {
   constructor(name, pronounSet, index, scores=[0,2,4]) {
     this.index = index;
-    
+
     this.name = name;
     this.nameDisplay = `<span class="playerName" onclick="players[${this.index}].display()">${name}</span>`;
     this.pronouns = pronounSets[pronounSet];
     this.log = [];
-    
+
     this.maxHealth = 100;
     this.health = 100;
     this.bleeding = 0;
@@ -174,7 +174,7 @@ class Player {
     this.log.push({day:day,log:message,death:true})
   }
   damage(amount, type, battle=false) {
-  
+
     this.health -= amount;
     if (battle) this.addCondition("bleeding",amount);
     const key = battle?"battle":type;
@@ -232,7 +232,7 @@ class Event {
   resolve() {
     if (this.type === "loot" && !this.player.dead && !this.player2.looted) {
       this.player.loot(this.player2);
-      this.player.log.push({day:day,log:`{name} loots ${this.player2.nameDisplay}'s corpse'`});
+      this.player.log.push({day:day,log:`{name} loots ${this.player2.nameDisplay}'s corpse`});
     }
     if (this.player.dead || (this.player2 && this.player2.dead)) {
       return;
@@ -279,9 +279,11 @@ class Event {
     else if (this.type === "fight") {
       this.data = this.player.fight(this.player2);
       if (!this.player.dead && this.player2.dead) {
-        
+        this.player.loot(this.player2);
+        this.player.log.push({day:day,log:`{name} loots ${this.player2.nameDisplay}'s corpse`});
       } else if (!this.player2.dead && this.player.dead) {
-        this.
+        this.player2.loot(this.player);
+        this.player2.log.push({day:day,log:`{name} loots ${this.player.nameDisplay}'s corpse`});
       }
       // this.player.log.push({day:day,log:(`{name} fights ${this.player2.nameDisplay} and ` + (this.data[0]?`takes ${this.data[0]} damage`:"emerges unscathed"))});
       // this.player2.log.push({day:day,log:(`{name} fights ${this.player.nameDisplay} and ` + (this.data[1]?`takes ${this.data[1]} damage`:"emerges unscathed"))});
@@ -306,7 +308,7 @@ function resolveEndDay() {
       // for (let i = player.index;i<players.length;i++) {
       //   players[i].index--;
       // }
-      
+
     }
   }
 }
@@ -334,7 +336,7 @@ function resolveDay() {
         events.push(new Event("event",player,BAD_EVENT));
       }
     }
-    
+
   }
     BAD_EVENT = false;
   events = shuffle(events);
@@ -350,7 +352,7 @@ function resolveDay() {
       gameOver(alive[healths.indexOf(Math.max(...healths))]);
       return;
     }
-    
+
   }
   const alive = players.filter(o=>o.health>0);
   const healths = alive.map(o=>o.health);

@@ -40,7 +40,7 @@ function loop() {
   for (var i = 0;i<HEIGHT;i++) {
     for (var j = 0;j<WIDTH;j++) {
       const t = 4*(j+(i*WIDTH));
-      data[t] = 255;
+      data[t] = 255-Math.floor(chemB[i*(WIDTH) + j]*255)*2;
       data[t+1] = 255-Math.floor(chemB[i*(WIDTH) + j]*255)*2;
       data[t+2] = 255;
       // Math.floor(chemB[i*(WIDTH) + j]*255)*2

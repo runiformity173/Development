@@ -43,6 +43,7 @@
     const instructions = {"\\":[[0,0],[1,1]],"/":[[1,0],[0,1]],"-":[[0,0],[0,1]],"_":[[1,0],[1,1]],"|":[[0,0.5],[1,0.5]],".":[[0.75,0.5],[1,0.5]]};
     const margin = 10;
     function write(word2) {
+      document.body.innerHTML = "";
       const word = word2.toUpperCase();
       for (let i = 0;i<word.length;i+=2) {
         const rune = document.createElement("canvas");
@@ -201,9 +202,14 @@
         rn.appendChild(rune);
         rn.classList.add("rune-outline");
         document.body.appendChild(rn);
+        
       }
      }
-    write("test")
+    window.addEventListener("keydown",function(e) {
+      if (e.key == "w") {
+        write(prompt("What to write?",""));
+      }
+    })
   </script>
 </body>
 

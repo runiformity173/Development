@@ -42,23 +42,29 @@ function displayLogs(day2=-1) {
   for (player of players) {
     if (day2 === -1) {
       print(player.name);
-      print("<span class='indented'>" + player.log.filter(o=>o.day>0).map(o=>`Day ${o.day}: ${o.log}`).join("<br>").format(player) + "</span>");}
+      print("<span class='indented'><table>" + player.log.filter(o=>o.day>0).map(o=>`<tr><td>Day ${o.day}: </td><td>${o.log}</td></tr>`).join("").format(player) + "</table></span>");}
     else {
       if (player.dayDead < day2 && player.dayDead !== -1) {continue;}
       print(player.name);
-      print("<span class='indented'>" + player.log.filter(o=>(o.day===day2)).map(o=>`Day ${o.day}: ${o.log}`).join("<br>").format(player) + "</span>");
+      print("<span class='indented'><table>" + player.log.filter(o=>(o.day===day2)).map(o=>`<tr><td>Day ${o.day}: </td><td>${o.log}</td></tr>`).join("").format(player) + "</table></span>");
     }
   }
 }
 function addPlayers() {
   players = [];
   for (const element of document.getElementById("playerField").children) {
+    if (element.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.value != "Primary Ability" && element.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.value != "Secondary Ability" && element.firstElementChild.firstElementChild.nextElementSibling.value[0].toLowerCase() != "p") {
     let final = [0,0,0];
     final[{"Intelligence":2,"Strength":1,"Dexterity":0}[element.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.value]] += 4;
     final[{"Intelligence":2,"Strength":1,"Dexterity":0}[element.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.value]] += 2;
     players.push(new Player(element.firstElementChild.firstElementChild.value,element.firstElementChild.firstElementChild.nextElementSibling.value[0].toLowerCase(),players.length,final));
+    } else {
+      alert("Please select something for every field.");
+      return false;
+    }
   }
   aliveNumber = players.length;
+  return true;
 }
 function setCookie(name,value) {
   const prev = JSON.parse(localStorage.getItem("hungerGames") || "{}");
@@ -116,8 +122,9 @@ function load() {
 function start() {
   if (document.getElementById("mainButton").innerHTML == "Start") {
     clear();
-    addPlayers();
+    if (addPlayers()) {
     if (players.length < 2) {
+      alert("You need at least 2 players to play.")
       return false;
     }
     day = 0;
@@ -127,6 +134,7 @@ function start() {
     document.getElementById("playerFieldWrapper").style.display = "none";
     document.getElementById("gamemakerActions").style.display = "inline-block";
     start();
+  }
   } else {document.getElementById("mainButton").innerHTML = "Next Day";document.getElementById("badEventButton").innerHTML = "Cause Bad Event Tomorrow";day++;resolveDay();}
 }
 

@@ -4,8 +4,8 @@ let FEED_A = 0.055;
 let KILL_B = 0.062;
 let DELTA_TIME = 1.0;
 
-const WIDTH = 512;
-const HEIGHT = 512;
+const WIDTH = 256;
+const HEIGHT = 256;
 const overallLength = WIDTH*HEIGHT;
 const laplaceCorner = 0.104;
 const laplaceEdge = 0.146;
