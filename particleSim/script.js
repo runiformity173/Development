@@ -8,7 +8,7 @@ let PAUSED = false;
 const reds = [255,222,3,149,128,161,180,161,106,235,230,200,215,53,72,0,75,190,155]
 const greens = [255,192,8,62,128,102,190,102,108,230,230,200,215,58,71,0,230,190,118]
 const blues = [255,96,252,0,128,47,210,47,109,225,230,255,205,252,83,0,75,200,83]
-const burnColors = {16:[161,102,47]};
+const burnColors = {16:[161,102,47],26:[161,102,47]};
 const board = new Board(WIDTH,HEIGHT);
 const plantMap = Array.from({ length: HEIGHT },() => Array.from({ length: WIDTH }, a=>(0)));
 const enemyMap = []

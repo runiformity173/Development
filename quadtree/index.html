@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Quadtree</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body onload="display()">
+  <canvas height="0" width="0" id="output"></canvas>
+  <div id="sidebar">
+    <p>Pixels Stored: <span id="pixelsStored">1</span></p><br>
+    <p>Brush Color: <input id="brushColor" disabled value="#000000" type="color"></p>
+    <p>Brush Thickness: <span id="brushThickness">3</span></p><br><br>
+    
+    <button onclick="DEPTH = !DEPTH;display();">View Depth</button><br>
+    <br>
+    <button onclick="setBrush('#ffffff')">Erase</button><br>
+    Brush Color: <input onchange="setBrush(this.value)" type="color" value="#000000"><br>
+    Brush Thickness: <input onchange="setBrushThickness(Number(this.value));" onclick="setBrushThickness(Number(this.value));" type="range" min="1" max="50" value="3" step="1"><br>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="display.js"></script>
+
+</body>
+
+</html>

@@ -12,15 +12,17 @@ button {
 }
 #output {
   height:100%;
-  width:100%;
-  /* image-rendering: -moz-crisp-edges;
+  width:100vh;
+  image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: pixelated;
-  -ms-interpolation-mode: nearest-neighbor; */
-  cursor:pointer;
+  -ms-interpolation-mode: nearest-neighbor;
 }
-#fps {
+
+#sidebar {
   position:absolute;
   right:10px;
-  top:10px;
+  top:60px;
+  width:30%;
+  text-align:right;
 }
