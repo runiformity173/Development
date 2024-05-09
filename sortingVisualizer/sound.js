@@ -51,4 +51,3 @@ let notes = [
 
 notes.reverse();
 tempo = 100;
-playMelody();
