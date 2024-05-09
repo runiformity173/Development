@@ -4,6 +4,7 @@ function noteNormalize(note) {
 }
 let worked = false;
 function playNote(frequency, duration, gainValue=0.2) {
+  console.log(frequency+" | "+duration);
   // create Oscillator node
   var oscillator = audioCtx.createOscillator();
   var gainNode = audioCtx.createGain(); // Create a gain node
@@ -20,43 +21,5 @@ function playNote(frequency, duration, gainValue=0.2) {
     function() {
       oscillator.stop();
       if (!worked) {worked = true;alert("cool");}
-      // playMelody();
     }, duration);
 }
-
-function playMelody() {
-  if (notes.length > 0) {
-    note = notes.pop();
-    playNote(note[0], 1000 * 256 / (note[1] * tempo));
-  }
-}
-
-
-let notes = [
-  [659, 4],
-  [659, 4],
-  [659, 4],
-  [523, 8],
-  [0, 16],
-  [783, 16],
-  [659, 4],
-  [523, 8],
-  [0, 16],
-  [783, 16],
-  [659, 4],
-  [0, 4],
-  [987, 4],
-  [987, 4],
-  [987, 4],
-  [1046, 8],
-  [0, 16],
-  [783, 16],
-  [622, 4],
-  [523, 8],
-  [0, 16],
-  [783, 16],
-  [659, 4]
-];
-
-notes.reverse();
-tempo = 100;
