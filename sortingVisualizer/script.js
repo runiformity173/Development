@@ -6,8 +6,6 @@ let HEIGHT = 128;
 let VIEW = "color";
 let colorMap = ['#ff0000', '#ffffff', '#0000ff'];
 let swaps = [];
-alert(noteNormalize(128));
-alert(noteNormalize(0));
 Array.prototype.swap = function(i,j) {
   swaps.unshift([i,j]);
   const temp = this[i];
