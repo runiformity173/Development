@@ -1,6 +1,6 @@
 var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function noteNormalize(note) {
-  return 1600*(note/SIZE)+200;
+  return 1000*(note/SIZE)+200;
 }
 let worked = false;
 function playNote(frequency, duration, gainValue=0.1) {
