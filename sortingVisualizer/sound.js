@@ -1,18 +1,22 @@
-var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-function playNote(frequency, duration) {
+function playNote(frequency, duration, gain=0.2) {
   // create Oscillator node
   var oscillator = audioCtx.createOscillator();
+  var gainNode = audioCtx.createGain(); // Create a gain node
 
-  oscillator.type = 'square';
+  oscillator.type = 'sine'; // Set oscillator type to sine wave
   oscillator.frequency.value = frequency; // value in hertz
-  oscillator.connect(audioCtx.destination);
+  oscillator.connect(gainNode); // Connect oscillator to gain node
+  gainNode.connect(audioCtx.destination); // Connect gain node to audio destination
+  gainNode.gain.value = gain; // Set the gain value to make the note quieter
+
   oscillator.start();
 
   setTimeout(
     function() {
       oscillator.stop();
-      playMelody();
+      // playMelody();
     }, duration);
 }
 
@@ -22,6 +26,7 @@ function playMelody() {
     playNote(note[0], 1000 * 256 / (note[1] * tempo));
   }
 }
+
 
 let notes = [
   [659, 4],

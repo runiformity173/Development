@@ -25,7 +25,7 @@
       <option>My Sort</option>
 
     </select><br>
-    <button onclick="playMelody()" class="btn btn-outline-light">Test</button>
+    <button onclick="playNote(Number(prompt('what frequency?')),Number(prompt('what duration?','100')),Number(prompt('what gain?','0.2')));" class="btn btn-outline-light">Test</button>
     <button onclick="start()" class="btn btn-outline-light">Sort</button>
     <br>
     <select class="btn btn-outline-light" onchange="changeView({'Color Mode':'color','Bar Mode':'bar'}[this.value]);">
