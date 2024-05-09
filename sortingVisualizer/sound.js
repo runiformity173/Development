@@ -1,8 +1,10 @@
 var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function noteNormalize(note) {
-  return note;
+  return note*2;
 }
+let worked = false;
 function playNote(frequency, duration, gainValue=0.2) {
+  if (!worked) {worked = true;alert("cool");}
   // create Oscillator node
   var oscillator = audioCtx.createOscillator();
   var gainNode = audioCtx.createGain(); // Create a gain node

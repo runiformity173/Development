@@ -1,4 +1,3 @@
-// Circle Sort
 // Smooth Sort
 
 function bubbleSort(arr) {
