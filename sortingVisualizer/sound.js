@@ -3,7 +3,7 @@ function noteNormalize(note) {
   return 1600*(note/SIZE)+200;
 }
 let worked = false;
-function playNote(frequency, duration, gainValue=0.2) {
+function playNote(frequency, duration, gainValue=0.1) {
   console.log(frequency+" | "+duration);
   // create Oscillator node
   var oscillator = audioCtx.createOscillator();
