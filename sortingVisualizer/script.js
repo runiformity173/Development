@@ -13,7 +13,7 @@ Array.prototype.swap = function(i,j) {
   this[j] = temp;
 }
 Array.prototype.shiftDown = function(i,j) {
-  swaps.unshift([i,j,j-i]);
+  swaps.unshift([i,j,j+i]);
   const temp = this[j];
   for (let k = j;k>i;k--) {
     this[k] = this[k-1];
@@ -191,6 +191,7 @@ function start() {
         ctx.fillRect(i,HEIGHT-temp2,1,temp2);
       }
     }
+    playNote(noteNormalize(copy[Math.min(s)]), Math.min(Math.ceil(10000/swaps.length),333));
   },Math.min(Math.ceil(10000/swaps.length),333));
 }
 function display() {

@@ -1,6 +1,8 @@
 var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-function playNote(frequency, duration, gain=0.2) {
+function noteNormalize(note) {
+  return note;
+}
+function playNote(frequency, duration, gainValue=0.2) {
   // create Oscillator node
   var oscillator = audioCtx.createOscillator();
   var gainNode = audioCtx.createGain(); // Create a gain node
@@ -9,7 +11,7 @@ function playNote(frequency, duration, gain=0.2) {
   oscillator.frequency.value = frequency; // value in hertz
   oscillator.connect(gainNode); // Connect oscillator to gain node
   gainNode.connect(audioCtx.destination); // Connect gain node to audio destination
-  gainNode.gain.value = gain; // Set the gain value to make the note quieter
+  gainNode.gain.value = gainValue; // Set the gain value to make the note quieter
 
   oscillator.start();
 
