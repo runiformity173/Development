@@ -20,6 +20,5 @@ function playNote(frequency, duration, gainValue=0.1) {
   setTimeout(
     function() {
       oscillator.stop();
-      if (!worked) {worked = true;alert("cool");}
     }, duration);
 }

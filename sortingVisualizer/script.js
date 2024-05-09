@@ -6,6 +6,8 @@ let HEIGHT = 128;
 let VIEW = "color";
 let colorMap = ['#ff0000', '#ffffff', '#0000ff'];
 let swaps = [];
+alert(noteNormalize(128));
+alert(noteNormalize(0));
 Array.prototype.swap = function(i,j) {
   swaps.unshift([i,j]);
   const temp = this[i];
@@ -191,7 +193,7 @@ function start() {
         ctx.fillRect(i,HEIGHT-temp2,1,temp2);
       }
     }
-    playNote(noteNormalize(copy[Math.min(...s)]), Math.min(Math.ceil(10000/swaps.length),333),1.0);
+    playNote(noteNormalize(copy[Math.min(...s)]), Math.min(Math.ceil(10000/swaps.length),333),0.2);
   },Math.min(Math.ceil(10000/swaps.length),333));
 }
 function display() {
