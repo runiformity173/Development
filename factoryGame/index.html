@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>In Progress</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link href="../bootstrap.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="bg-dark text-light">
+  <div id="output"></div>
+  <div id="sidebar">
+    <p>FPS: <span id="fps"></span></p>
+    <p>TPS: <span id="tps"></span></p>
+
+  </div>
+  <script>console.log = function() {
+  let final = "";
+  for (var i = 0; i < arguments.length; i++) {
+    final += String(arguments[i]) + "\n";
+  }
+  alert(final);
+}</script>
+  <script src="data.js"></script>
+  <script src="shapes.js"></script>
+  <script src="script.js"></script>
+  <script src="display.js"></script>
+
+</body>
+
+</html>

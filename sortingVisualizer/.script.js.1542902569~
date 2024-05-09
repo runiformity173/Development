@@ -1,0 +1,86 @@
+let SIZE = 100;
+let HEIGHT = 100;
+let swaps = [];
+Array.prototype.swap = function(i,j) {
+  swaps.unshift([i,j]);
+  const temp = this[i];
+  this[i] = this[j];
+  this[j] = temp;
+}
+Array.prototype.equals = function(other) {
+  if (this.length !== other.length) {return false;}
+  for (let i = 0;i<this.length;i++) {
+    if (this[i] !== other[i]) {return false;}
+  }
+  return true;
+}
+function isSorted(arr) {
+  return
+}
+function shuffle(a) {let c=a.length;while (c!=0) {let r=Math.floor(Math.random()*c);c--;[a[r],a[c]]=[a[c],a[r]];}}
+const canvas = document.getElementById("output");
+canvas.width = SIZE;
+canvas.height = SIZE;
+const ctx = canvas.getContext("2d");
+function testSorts(arr) {
+  const correct = structuredClone(arr);
+  correct.sort((a,b)=>a-b);
+  for (const i in sortingAlgorithms) {
+    const temp = structuredClone(arr);
+    sortingAlgorithms[i](temp);
+    swaps = [];
+    if (temp.equals(correct)) {
+      console.log(i,"works")
+    } else {
+      console.log(i,"doesn't work")
+      console.log(correct);
+      console.log(temp);
+    }
+  }
+}
+const {abs,min,max,round}=Math;
+function hslToRgb(a,c,d){let e,f,h;if(0===c)e=f=h=d;else{const b=.5>d?d*(1+c):d+c-d*c,g=2*d-b;e=hueToRgb(g,b,a+1/3),f=hueToRgb(g,b,a),h=hueToRgb(g,b,a-1/3)}return[round(255*e),round(255*f),round(255*h)];return"#"+[round(255*e),round(255*f),round(255*h)].map(a=>a.toString(16).padStart(2,"0")).join("")}function hueToRgb(a,b,c){return 0>c&&(c+=1),1<c&&(c-=1),c<1/6?a+6*(b-a)*c:c<1/2?b:c<2/3?a+6*((b-a)*(2/3-c)):a}
+function changeSize(size) {
+  SIZE = size;
+  arr = Array.from({length:SIZE}).map((i,j)=>j);
+  HEIGHT = size;
+  clearInterval(swapInterval);
+  swapInterval = -1;
+  swaps = [];
+  canvas.width = size;
+  canvas.height = size;
+
+}
+let arr = Array.from({length:SIZE}).map((i,j)=>j);
+let COLORS = [];
+let swapInterval = -1;
+let copy = [];
+function start() {
+  const sortMethod = document.getElementById("sortMethod").value;
+  if (swapInterval !== -1) {clearInterval(swapInterval);swaps=[];}
+  shuffle(arr);
+  COLORS = arr.map((i)=>hslToRgb((i/SIZE+2)/3,1,0.5));
+  copy = structuredClone(arr);
+  display();
+  sortingAlgorithms[sortMethod](arr);
+  swapInterval = setInterval(function(){
+    if (swaps.length==0) {clearInterval(swapInterval);swapInterval=-1;return;}
+    const [i,j] = swaps.pop();
+    [COLORS[i],COLORS[j]] = [COLORS[j],COLORS[i]];
+    [copy[i],copy[j]] = [copy[j],copy[i]];
+    const c = COLORS[i];
+    const d = COLORS[j];
+    ctx.fillStyle = "rgb("+c.map(String).join(",")+")";
+    ctx.fillRect(i,0,1,HEIGHT);
+    ctx.fillStyle = "rgb("+d.map(String).join(",")+")";
+    ctx.fillRect(j,0,1,HEIGHT);
+  },Math.ceil(10000/swaps.length));
+}
+function display() {
+  ctx.clearRect(0,0,SIZE,HEIGHT);
+  for (let i = 0;i<SIZE;i++) {
+    ctx.fillStyle = "rgb("+COLORS[i].map(String).join(",")+")";
+    ctx.fillRect(i,0,1,HEIGHT);
+  }
+}
+mergeSort([3,1,2,4])

@@ -1,0 +1,33 @@
+html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+#output {
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100vh;
+  height:100%;
+  background-size: 5vh 5vh;
+  background-color: green;
+  background-image:
+    linear-gradient(to right, black 0.5px, transparent 1px, transparent calc(5vh - 0.5px), transparent 1px, black 0.5px),
+    linear-gradient(to bottom, black 0.5px, transparent 1px, transparent calc(5vh - 0.5px), transparent 1px, black 0.5px);
+}
+#sidebar {
+  position:absolute;
+  right:0px;
+  top:0px;
+  text-align:right;
+}
+.tile {
+  position:absolute;
+  margin: none;
+}
+.has-items {
+  filter:blur(2px);
+}
+img {
+  user-select: none;
+}

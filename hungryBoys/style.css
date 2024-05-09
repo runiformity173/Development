@@ -5,13 +5,15 @@ html {
 }
 #outputWrapper {
   z-index:-5;
-  width:50%;
+  width:100%;
+}
+#output {
 }
 #options {
   text-align:center;
 }
 #playerField {
-  columns:2;
+  /* columns:2; */
   
 }
 .playerP {
@@ -49,12 +51,28 @@ select.playerInput {
 .playerName {
   cursor:pointer;
 }
-.indented {
-  display:inline-block;
-  margin-left:1em;
+#logs {
+  column-count:2;
+  width:100%;
+  height:100%;
 }
+.playerLog {
+  width:100%;
+  
+  display:block;
+
+}
+.playerLog table {
+  width:100%;
+  display:inline-block;
+  padding-left:1em;
+}
+/* .playerLog table * {
+  border:red dotted 1px;
+} */
 td:nth-child(odd) {
   width:10%;
+  text-wrap:nowrap;
 }
 #gamemakerActions {
   display: none;
@@ -67,7 +85,15 @@ td:nth-child(odd) {
   /* background-color: red; */
 }
 #playersStatus {
-
+  columns:2;
+  width:100vw;
+  text-align:left;
+}
+#playersStatus div {
+  columns:1;
+  display:block;
+  text-align:left;
+  width:100%;
 }
 #gamemakerActionsActual {
   display:inline-block;

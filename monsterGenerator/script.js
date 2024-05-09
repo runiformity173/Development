@@ -1,6 +1,7 @@
 const choose=o=>o[Math.floor(Math.random()*o.length)];
 function parseRolls(text) {
   let mathRegex = /\d+d\d+\s*\+*\s*\d*/g;
+  if (!text) {console.log(text);}
   let matches = text.match(mathRegex);
   let final = text;
   if (matches!==null) {
@@ -45,8 +46,34 @@ function reEvaluate(a) {
     document.getElementById("dragonType").disabled = true;
   }
 }
+console.log(Object.keys(monsterData));
+const monsterNames = {
+  "Beholder":"beholder",
+  "Demon":"demon",
+  "Devil":"devil",
+  "Giant":"giant",
+  "Gnoll":"gnoll",
+  "Hag":"hag",
+  "Kobold":"kobold",
+  "Mind Flayer":"mindflayer",
+  "Orc":"orc",
+  "Gnoll War Band":"warband",
+};
 function generate() {
-  const dragonType = document.getElementById("dragonType").value != "Random"?document.getElementById("dragonType").value:choose(["Amethyst","Black","Blue","Brass","Bronze","Copper","Crystal","Deep","Emerald","Gold","Green","Moonstone","Red","Sapphire","Shadow","Silver","Topaz","Turtle","White"]);
-  const dragonAge = document.getElementById("dragonAge").value!="Random"?document.getElementById("dragonAge").value:choose(["Wyrmling","Young","Adult","Ancient"]);
-  document.getElementById("output").innerHTML = choose(data[dragonType.toLowerCase()]["connections"+(dragonType==="Faerie"?"":dragonAge)]);
+  const monsterType = document.getElementById("monster").value;
+  if (monsterType==="Dragon") {
+    const dragonType = document.getElementById("dragonType").value != "Random"?document.getElementById("dragonType").value:choose(["Amethyst","Black","Blue","Brass","Bronze","Copper","Crystal","Deep","Emerald","Gold","Green","Moonstone","Red","Sapphire","Shadow","Silver","Topaz","Turtle","White"]);
+    const dragonAge = document.getElementById("dragonAge").value!="Random"?document.getElementById("dragonAge").value:choose(["Wyrmling","Young","Adult","Ancient"]);
+    document.getElementById("output").innerHTML = choose(dragonData[dragonType.toLowerCase()]["connections"+(dragonType==="Faerie"?"":dragonAge)]);
+  } else {
+    document.getElementById("output").innerHTML = '';
+    const data = monsterData[monsterNames[monsterType]];
+    let final = "<table>";
+    for (const key in data) {
+      if (key === "categories" || key === "rolls")continue;
+      if (!(key in categoryTranslations)) {categoryTranslations[key] = ''}
+      final += `<tr><td>${categoryTranslations[key]}&emsp;&emsp;</td><td>${parseRolls(data[key][roll(data['categories'][key].join('d'))-1])}</td></tr>`
+    }
+    document.getElementById("output").innerHTML += final+"</table>";
+  }
 }

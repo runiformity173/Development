@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Forces</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link href="../bootstrap.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="bg-dark text-light" onload="reset();trackObject(1);">
+  <canvas id="output" width="0" height="0"></canvas>
+  <canvas id="trails" width="0" height="0"></canvas>
+
+  <div id="sidebar">
+    <p>FPS: <span id="fps">?</span></p>
+    <button onclick="trackObject(1);">Track Earth</button><br>
+    <button onclick="trackObject(2);">Track Moon</button><br>
+    <button onclick="trackObject(4);">Track Mars</button><br>
+    <button onclick="trackObject(3);">Track Comet</button><br>
+
+    <br>
+    <button onclick="reset()">Reset</button>
+    </div>
+
+  <script src="script.js"></script>
+  <script src="display.js"></script>
+
+</body>
+
+</html>
