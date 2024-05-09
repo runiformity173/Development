@@ -4,7 +4,6 @@ function noteNormalize(note) {
 }
 let worked = false;
 function playNote(frequency, duration, gainValue=0.2) {
-  if (!worked) {worked = true;alert("cool");}
   // create Oscillator node
   var oscillator = audioCtx.createOscillator();
   var gainNode = audioCtx.createGain(); // Create a gain node
@@ -20,6 +19,7 @@ function playNote(frequency, duration, gainValue=0.2) {
   setTimeout(
     function() {
       oscillator.stop();
+      if (!worked) {worked = true;alert("cool");}
       // playMelody();
     }, duration);
 }
