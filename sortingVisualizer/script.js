@@ -121,16 +121,15 @@ function changeView(view) {
     // canvas.classList.remove("unpixelated");
     if (document.getElementById('vertical').checked) canvas.classList.add("vertical");
     document.getElementById('colorStuff').style.display = "block";
-  } else if (view == 'bar') {
+  } else if (view == 'bar' || view == 'both') {
     // canvas.classList.add("unpixelated");
-    canvas.classList.remove("vertical");
-    document.getElementById('colorStuff').style.display = "none";
+    
+    if (view == 'bar') {document.getElementById('colorStuff').style.display = "none";canvas.classList.remove("vertical");}
 
   }
   if (copy.length) display();
 }
 let opTime = 0;
-
 function start() {
   const sortMethod = document.getElementById("sortMethod").value;
   if (SIZE > 256 && badMethods.includes(sortMethod)) {alert("Choose a smaller size (256 or below) for sorts this inefficient");return;}
@@ -148,6 +147,7 @@ function start() {
   swapInterval = setInterval(function(){
     if (swaps.length==0) {
       clearInterval(swapInterval);playFinal();
+      playFinalAnimation();
       swapInterval=-1;return;
     }
     const s = swaps.pop();
@@ -162,12 +162,12 @@ function start() {
         ctx.fillRect(i,0,1,HEIGHT);
         ctx.fillStyle = "rgb("+d.map(String).join(",")+")";
         ctx.fillRect(j,0,1,HEIGHT);
-      } else if (VIEW == 'bar') {
+      } else if (VIEW == 'bar' || VIEW == 'both') {
         ctx.clearRect(i,0,1,HEIGHT-copy[i]);
-        ctx.fillStyle = "white";
+        ctx.fillStyle = (VIEW=='bar'?"white":"rgb("+c.map(String).join(",")+")");
         ctx.fillRect(i,HEIGHT-copy[i],1,copy[i]);
         ctx.clearRect(j,0,1,HEIGHT-copy[j]);
-        ctx.fillStyle = "white";
+        ctx.fillStyle = (VIEW=='bar'?"white":"rgb("+d.map(String).join(",")+")");
         ctx.fillRect(j,HEIGHT-copy[j],1,copy[j]);
       }
     } else if (s.length == 4) {
@@ -180,9 +180,9 @@ function start() {
         if (VIEW == 'color') {
           ctx.fillStyle = "rgb("+COLORS[k].map(String).join(",")+")";
           ctx.fillRect(k,0,1,HEIGHT);
-        } else if (VIEW == 'bar') {
+        } else if (VIEW == 'bar' || VIEW == 'both') {
           ctx.clearRect(k,0,1,HEIGHT-copy[k]);
-          ctx.fillStyle = "white";
+          ctx.fillStyle = (VIEW=='bar'?"white":"rgb("+COLORS[k].map(String).join(",")+")");
           ctx.fillRect(k,HEIGHT-copy[k],1,copy[k]);
         }
       }
@@ -191,9 +191,9 @@ function start() {
       if (VIEW == 'color') {
         ctx.fillStyle = "rgb("+temp.map(String).join(",")+")";
         ctx.fillRect(i,0,1,HEIGHT);
-      } else if (VIEW == 'bar') {
+      } else if (VIEW == 'bar' || VIEW == 'both') {
         ctx.clearRect(i,0,1,HEIGHT-temp2);
-        ctx.fillStyle = "white";
+        ctx.fillStyle = (VIEW == 'bar'?"white":"rgb("+temp.map(String).join(",")+")");
         ctx.fillRect(i,HEIGHT-temp2,1,temp2);
       }
     }
@@ -207,8 +207,24 @@ function display() {
       ctx.fillRect(i,0,1,HEIGHT);
     } else {
       ctx.clearRect(i,0,1,HEIGHT-copy[i]);
-      ctx.fillStyle = "white";
+      ctx.fillStyle = (VIEW=='bar'?"white":"rgb("+COLORS[i].map(String).join(",")+")");
       ctx.fillRect(i,HEIGHT-copy[i],1,copy[i]);
     }
   }
+}
+let BAR_STAY_DELAY = 200;
+function playSweep(i) {
+  ctx.fillStyle = "lime";
+  ctx.fillRect(i,HEIGHT-copy[i],1,copy[i]);
+  setTimeout(function(){
+    ctx.fillStyle = "white";
+    ctx.fillRect(i,HEIGHT-copy[i],1,copy[i]);
+  },BAR_STAY_DELAY);
+  setTimeout(function(){
+    if (i == SIZE) {return;}
+    playSweep(i+1);
+  },Math.ceil(700/SIZE));
+}
+function playFinalAnimation() {
+  playSweep(0);
 }

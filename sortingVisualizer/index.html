@@ -10,6 +10,7 @@
 </head>
 
 <body class="bg-dark text-light">
+  <script src="script.js"></script>
   <div id="sidebar">
     <select class="btn btn-outline-light" id="sortMethod">
       <option>Quick Sort</option>
@@ -25,12 +26,12 @@
       <option>My Sort</option>
 
     </select><br>
-    <button onclick="playNote(Number(prompt('what frequency?')),Number(prompt('what duration?','100')),Number(prompt('what gain?','0.2')));" class="btn btn-outline-light">Test</button>
     <button onclick="start()" class="btn btn-outline-light">Sort</button>
     <br>
-    <select class="btn btn-outline-light" onchange="changeView({'Color Mode':'color','Bar Mode':'bar'}[this.value]);">
+    <select class="btn btn-outline-light" onchange="changeView({'Color Mode':'color','Bar Mode':'bar', 'Colored Bars':'both'}[this.value]);">
       <option>Color Mode</option> 
       <option>Bar Mode</option>
+      <option>Colored Bars</option>
     </select>
     <br>
     <template id="template">
@@ -46,7 +47,8 @@
       </span>
     </template>
     <div id="colorStuff">
-      Vertical: <input id="vertical" type="checkbox" onchange="if (document.getElementById('output').classList.contains('vertical') != this.checked) {document.getElementById('output').classList.toggle('vertical')}">
+      <div id="verticalWrapper">
+      Vertical: <input id="vertical" type="checkbox" onchange="if (document.getElementById('output').classList.contains('vertical') != this.checked) {document.getElementById('output').classList.toggle('vertical')}"></div>
       <div id="colorInputs"></div><button class="btn btn-outline-light" onclick="addColor('#ffffff');">Add Color</button>
       <br>
       
@@ -62,7 +64,6 @@
   <script src="libs.js"></script>
   <script src="sound.js"></script>
   <script src="sortingAlgorithms.js"></script>
-  <script src="script.js"></script>
   <script>
     function addColor(arg="#ffffff") {const t = document.getElementById("template").content.cloneNode(true);t.firstElementChild.firstElementChild.firstElementChild.value 
   = arg;document.getElementById("colorInputs").appendChild(t);evaluateColors();}
