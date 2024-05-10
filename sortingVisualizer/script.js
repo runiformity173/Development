@@ -129,7 +129,7 @@ function changeView(view) {
   }
   if (copy.length) display();
 }
-
+let opTime = 0;
 
 function start() {
   const sortMethod = document.getElementById("sortMethod").value;
@@ -142,8 +142,12 @@ function start() {
   display();
   sortingAlgorithms[sortMethod](arr);
   console.log(swaps.length);
+  opTime = Math.min(Math.ceil(10000/swaps.length),333);
   swapInterval = setInterval(function(){
-    if (swaps.length==0) {clearInterval(swapInterval);swapInterval=-1;return;}
+    if (swaps.length==0) {
+      clearInterval(swapInterval);playFinal();
+      swapInterval=-1;return;
+    }
     const s = swaps.pop();
     if (s.length == 2) {
       const [i,j] = s;
@@ -164,7 +168,8 @@ function start() {
         ctx.fillStyle = "white";
         ctx.fillRect(j,HEIGHT-copy[j],1,copy[j]);
       }
-    } else {
+      playNote(noteNormalize(Math.min(copy[s[0]],copy[s[1]])), opTime,0.2);
+    } else if (s.length == 3) {
       const [i,j,_] = s;
       const temp = COLORS[j];
       const temp2 = copy[j];
@@ -190,9 +195,9 @@ function start() {
         ctx.fillStyle = "white";
         ctx.fillRect(i,HEIGHT-temp2,1,temp2);
       }
+      playNote(noteNormalize(copy[s[0]]),opTime,0.2);
     }
-    playNote(noteNormalize(copy[Math.min(...s)]), Math.min(Math.ceil(10000/swaps.length),333),0.2);
-  },Math.min(Math.ceil(10000/swaps.length),333));
+  },opTime);
 }
 function display() {
   ctx.clearRect(0,0,SIZE,HEIGHT);
