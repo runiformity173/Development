@@ -139,6 +139,7 @@ function start() {
   // COLORS = arr.map((i)=>hslToRgb((i/SIZE+2)/3,1,0.5));
   COLORS = arr.map((i)=>interpolateColor((i)/SIZE));
   copy = arr.map(o=>o+1);
+  if (noteInterval !== -1) {clearInterval(noteInterval);noteInterval=-1;oscillator.stop()}
   display();
   sortingAlgorithms[sortMethod](arr);
   console.log(swaps.length)
