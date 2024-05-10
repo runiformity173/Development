@@ -1,7 +1,6 @@
 //TODO: 
 //  Make shell sort work visually
 //  Bar view *
-console.log("loading script.js");
 let SIZE = 128;
 let HEIGHT = 128;
 let VIEW = "color";
@@ -148,7 +147,7 @@ function start() {
   swapInterval = setInterval(function(){
     if (swaps.length==0) {
       clearInterval(swapInterval);playFinal();
-      // playFinalAnimation();
+      if (VIEW == 'bar') playFinalAnimation();
       swapInterval=-1;return;
     }
     const s = swaps.pop();
@@ -213,19 +212,18 @@ function display() {
     }
   }
 }
-// let BAR_STAY_DELAY = 200;
-// function playSweep(i) {
-//   ctx.fillStyle = "lime";
-//   ctx.fillRect(i,HEIGHT-copy[i],1,copy[i]);
-//   setTimeout(function(){
-//     ctx.fillStyle = "white";
-//     ctx.fillRect(i,HEIGHT-copy[i],1,copy[i]);
-//   },BAR_STAY_DELAY);
-//   setTimeout(function(){
-//     if (i == SIZE) {return;}
-//     playSweep(i+1);
-//   },Math.ceil(700/SIZE));
-// }
-// function playFinalAnimation() {
-//   playSweep(0);
-// }
+function playSweep(i) {
+  ctx.fillStyle = "lime";
+  ctx.fillRect(i,HEIGHT-copy[i],1,copy[i]);
+  setTimeout(function(){
+    ctx.fillStyle = "white";
+    ctx.fillRect(i,HEIGHT-copy[i],1,copy[i]);
+  },2/7*SIZE*Math.ceil(700/SIZE));
+  setTimeout(function(){
+    if (i == SIZE) {return;}
+    playSweep(i+1);
+  },Math.ceil(700/SIZE));
+}
+function playFinalAnimation() {
+  playSweep(0);
+}
