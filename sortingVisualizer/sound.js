@@ -5,24 +5,23 @@ function noteNormalize(note) {
 let worked = false;
 
 
-function playNote(frequency, duration, gainValue=0.1) {
+function playSort(gainValue=0.2) {
   var oscillator = audioCtx.createOscillator();
   var gainNode = audioCtx.createGain(); // Create a gain node
 
   oscillator.type = 'sine'; // Set oscillator type to sine wave
   oscillator.connect(gainNode); // Connect oscillator to gain node
   gainNode.connect(audioCtx.destination); // Connect gain node to audio destination
-  
-  oscillator.frequency.value = frequency; // value in hertz
+  oscillator.frequency.value = noteNormalize(swaps[swaps.length-1][2]); // value in hertz
   gainNode.gain.value = gainValue; // Set the gain value to make the note quieter
+  let globalI = 0;
   oscillator.start();
-  
-
-  setTimeout(function() {
-    oscillator.stop();
-  }, duration);
+  const noteInterval = setInterval(function() {
+    if (swaps.length == 0) {clearInterval(noteInterval);oscillator.stop();return;}
+    oscillator.frequency.setValueAtTime(noteNormalize(swaps[swaps.length-1][2]),globalI++*opTime/1000);
+  },opTime);
 }
-function playFinal(gainValue=0.2,duration=1500) {
+function playFinal(gainValue=0.2,duration=700) {
   var oscillator2 = audioCtx.createOscillator();
   var gainNode2 = audioCtx.createGain();
   oscillator2.type = 'sine';

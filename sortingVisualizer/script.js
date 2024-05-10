@@ -7,13 +7,13 @@ let VIEW = "color";
 let colorMap = ['#ff0000', '#ffffff', '#0000ff'];
 let swaps = [];
 Array.prototype.swap = function(i,j) {
-  swaps.unshift([i,j]);
+  swaps.unshift([i,j,Math.min(this[i],this[j])]);
   const temp = this[i];
   this[i] = this[j];
   this[j] = temp;
 }
 Array.prototype.shiftDown = function(i,j) {
-  swaps.unshift([i,j,j+i]);
+  swaps.unshift([i,j,this[j],j+i]);
   const temp = this[j];
   for (let k = j;k>i;k--) {
     this[k] = this[k-1];
@@ -141,16 +141,17 @@ function start() {
   copy = arr.map(o=>o+1);
   display();
   sortingAlgorithms[sortMethod](arr);
-  console.log(swaps.length);
+  console.log(swaps.length)
   opTime = Math.min(Math.ceil(10000/swaps.length),333);
+  setTimeout(function(){playSort();},opTime-1);
   swapInterval = setInterval(function(){
     if (swaps.length==0) {
       clearInterval(swapInterval);playFinal();
       swapInterval=-1;return;
     }
     const s = swaps.pop();
-    if (s.length == 2) {
-      const [i,j] = s;
+    if (s.length == 3) {
+      const [i,j,_] = s;
       [COLORS[i],COLORS[j]] = [COLORS[j],COLORS[i]];
       [copy[i],copy[j]] = [copy[j],copy[i]];
       const c = COLORS[i];
@@ -168,9 +169,8 @@ function start() {
         ctx.fillStyle = "white";
         ctx.fillRect(j,HEIGHT-copy[j],1,copy[j]);
       }
-      playNote(noteNormalize(Math.min(copy[s[0]],copy[s[1]])), opTime,0.2);
-    } else if (s.length == 3) {
-      const [i,j,_] = s;
+    } else if (s.length == 4) {
+      const [i,j,_,_2] = s;
       const temp = COLORS[j];
       const temp2 = copy[j];
       for (let k = j;k>i;k--) {
@@ -195,7 +195,6 @@ function start() {
         ctx.fillStyle = "white";
         ctx.fillRect(i,HEIGHT-temp2,1,temp2);
       }
-      playNote(noteNormalize(copy[s[0]]),opTime,0.2);
     }
   },opTime);
 }
