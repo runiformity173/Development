@@ -218,7 +218,7 @@ function playSweep(i) {
   setTimeout(function(){
     ctx.fillStyle = "white";
     ctx.fillRect(i,HEIGHT-copy[i],1,copy[i]);
-  },2/7*SIZE*Math.ceil(700/SIZE));
+  },4/7*SIZE*Math.ceil(700/SIZE));
   setTimeout(function(){
     if (i == SIZE) {return;}
     playSweep(i+1);
