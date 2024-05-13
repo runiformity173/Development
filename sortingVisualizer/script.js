@@ -117,7 +117,7 @@ function rgbToHex(rgb) {
 
 function changeView(view) {
   VIEW=view;
-  if (view == 'color') {
+  if (view == 'color' || view == 'both') {
     // canvas.classList.remove("unpixelated");
     if (document.getElementById('vertical').checked) canvas.classList.add("vertical");
     document.getElementById('colorStuff').style.display = "block";
