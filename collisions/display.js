@@ -94,7 +94,7 @@ function frame() {
     ctx.closePath();
     ctx.fill();
   }
-  if (MODE === 2) {
+  if (MODE === 2 || true) {
     for (const constraintKey in distanceConstraintDict) {
       for (const c of distanceConstraintDict[constraintKey]) {
         const i = Number(constraintKey);

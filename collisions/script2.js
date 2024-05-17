@@ -17,7 +17,7 @@ for (const i of distanceConstraints) {
   distanceConstraintDict[Math.min(i.circle1,i.circle2)]=[Math.max(i.circle1,i.circle2)];
   if (!(Math.min(i.circle1,i.circle2) in constraintDistanceDict)) {constraintDistanceDict[Math.min(i.circle1,i.circle2)] = {};}
   constraintDistanceDict[Math.min(i.circle1,i.circle2)][Math.max(i.circle1,i.circle2)] = i.distance;}
-//Verlet
+// Verlet
 // Don't change velocities
 let CIRCLE_AMOUNT = 0;
 let MAX_CIRCLES = 1000;
