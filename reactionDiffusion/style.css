@@ -1,6 +1,6 @@
 html {
-  height: 100%;
-  width: 100vh;
+  height: min(100%,100vw);
+  width: min(100%,100vh);
 }
 body {
   margin:0;

@@ -3,7 +3,7 @@ let CREATURE_MAX = 1024;
 let TURNS = 150;
 
 let GENE_NUMBER = 16;
-let INTERNAL_NEURONS = 6;
+let INTERNAL_NEURONS = 5;
 let MUTATION_CHANCE = 0.05;
 
 
@@ -35,7 +35,7 @@ function addCreature(x,y) {
 
     if (board[y][x] > -1) {return}
     board[y][x] = CREATURE_AMOUNT++;
-    creatures.push(new Creature(perfectGenesMiddle,x,y));
+    creatures.push(new Creature(testGenes,x,y));
 }
 let TURN_COUNTER = 0;
 function update() {
@@ -45,7 +45,7 @@ function update() {
     board = Array.from({length:Math.floor(HEIGHT)},()=>Array.from({length:Math.floor(WIDTH)},()=>(-1)));
     shuffle(creatures);
     for (let i = 0;i<CREATURE_AMOUNT;i++) {
-      if (creatures[i].x < 48 || creatures[i].x > 80) {continue;}
+      if (!survives(creatures[i])) {continue;}
       let x = Math.floor(Math.random()*WIDTH), y = Math.floor(Math.random()*HEIGHT);
       while (board[y][x] > -1) {x = Math.floor(Math.random()*WIDTH);y = Math.floor(Math.random()*HEIGHT);}
       board[y][x] = newCreatures.length;
@@ -61,7 +61,8 @@ function update() {
       board[y][x] = newCreatures.length;
       
       newCreatures.push(newCreatures[i].reproduce(x,y));
-    } while (newCreatures.length < CREATURE_MAX) {
+    }
+    while (newCreatures.length < CREATURE_MAX) {
       let x = Math.floor(Math.random()*WIDTH), y = Math.floor(Math.random()*HEIGHT);
       while (board[y][x] > -1) {x = Math.floor(Math.random()*WIDTH);y = Math.floor(Math.random()*HEIGHT);}
       board[y][x] = newCreatures.length;
@@ -71,9 +72,17 @@ function update() {
     creatures = newCreatures;
     CREATURE_AMOUNT = CREATURE_MAX;
     TURN_COUNTER = 0;
+    document.getElementById("generations").innerHTML = Number(document.getElementById("generations").innerHTML)+1;
   } else {
     for (let i = 0;i<CREATURE_AMOUNT;i++) {
       creatures[i].act(board);
     }
   }
+}
+
+function survives(creature) {
+  return creature.x > 120;
+  return Math.abs(WIDTH-creature.x-creature.y) < 7; // Diagonal
+  return (creature.x >= 48 && creature.x <= 80) || (creature.y >= 48 && creature.y <= 80); // Plus
+  return creature.x >= 48 && creature.x <= 80; // Vertical line
 }

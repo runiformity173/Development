@@ -31,10 +31,10 @@ setInterval(function(){
 },1000)
 function loop() {
   update();
-  // update();
-  // update();
-  // update();
-  // update();
+  update();
+  update();
+  update();
+  update();
   var imgData = ctx.createImageData(WIDTH, HEIGHT);
   var data = imgData.data;
   for (var i = 0;i<HEIGHT;i++) {

@@ -141,7 +141,6 @@ function start() {
   if (noteInterval !== -1) {clearInterval(noteInterval);noteInterval=-1;oscillator.stop()}
   display();
   sortingAlgorithms[sortMethod](arr);
-  console.log(swaps.length)
   opTime = Math.min(Math.ceil(10000/swaps.length),333);
   setTimeout(function(){playSort();},opTime-1);
   swapInterval = setInterval(function(){

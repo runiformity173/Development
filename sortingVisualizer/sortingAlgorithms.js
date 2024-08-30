@@ -210,8 +210,8 @@ function circleSort(a) {
 
 function heapify(arr, n, i) {
   let largest = i;
-  const left = 2 * i + 1;
-  const right = 2 * i + 2;
+  const left = i*2 + 1;
+  const right = i*2 + 2;
   if (left < n && arr[left] > arr[largest]) {
     largest = left;
   }
@@ -225,7 +225,7 @@ function heapify(arr, n, i) {
 }
 function buildMaxHeap(arr) {
   const n = arr.length;
-  for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+  for (let i = n<<1 - 1; i >= 0; i--) {
     heapify(arr, n, i);
   }
 }
@@ -243,7 +243,7 @@ function mySort(arr,oglow=0,oghigh=-1,flag=2) {
   let high=oghigh, low=oglow;
   while (high-low > 0){
     mid = Math.floor((oghigh-oglow)/2) + oglow;
-    if (flag) {
+    if (Math.random()<0.5) {
       mySort(arr,mid+1,oghigh,flag-1);
       mid = Math.floor((oghigh-oglow)/2) + oglow;
       mySort(arr,oglow,mid,flag-1);
